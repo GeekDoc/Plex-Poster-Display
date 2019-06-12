@@ -1,0 +1,1162 @@
+[
+    {
+        "id": "d2aa6719.2a60d8",
+        "type": "tab",
+        "label": "Plex",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "f8c2d9fd.b47218",
+        "type": "mqtt in",
+        "z": "d2aa6719.2a60d8",
+        "name": "",
+        "topic": "Plex",
+        "qos": "2",
+        "broker": "7eb5b073.c834f",
+        "x": 118.57139205932617,
+        "y": 85.71428966522217,
+        "wires": [
+            [
+                "38d62e28.b21442"
+            ]
+        ]
+    },
+    {
+        "id": "9bdeab92.f12dc8",
+        "type": "json",
+        "z": "d2aa6719.2a60d8",
+        "name": "Convert to JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 287.14281845092773,
+        "y": 85.71428203582764,
+        "wires": [
+            [
+                "3b64084b.0f4388"
+            ]
+        ]
+    },
+    {
+        "id": "3b64084b.0f4388",
+        "type": "change",
+        "z": "d2aa6719.2a60d8",
+        "name": "move body to payload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.body",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 504.2856636047363,
+        "y": 85.85713958740234,
+        "wires": [
+            [
+                "65c1deca.ea996"
+            ]
+        ]
+    },
+    {
+        "id": "3b8dfb5b.cd29a4",
+        "type": "json",
+        "z": "d2aa6719.2a60d8",
+        "name": "Convert to JSON",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 961.4285163879395,
+        "y": 85.57143688201904,
+        "wires": [
+            [
+                "ba6a2c97.a5fb7",
+                "8995e34f.8a155"
+            ]
+        ]
+    },
+    {
+        "id": "42808521.8c2a7c",
+        "type": "switch",
+        "z": "d2aa6719.2a60d8",
+        "name": "Is there a poster URL?",
+        "property": "payload.poster_url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "https://",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 180.79363250732422,
+        "y": 379.99997329711914,
+        "wires": [
+            [
+                "c898156e.8419c8"
+            ]
+        ]
+    },
+    {
+        "id": "b7c5c333.6f44c",
+        "type": "file",
+        "z": "d2aa6719.2a60d8",
+        "name": "Save poster.jpg",
+        "filename": "/mnt/rd/poster.jpg",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 182.36504364013672,
+        "y": 505.8571090698242,
+        "wires": [
+            [
+                "c1752904.d3a758"
+            ]
+        ]
+    },
+    {
+        "id": "7c354996.cb9b08",
+        "type": "switch",
+        "z": "d2aa6719.2a60d8",
+        "name": "My Account or Local?",
+        "property": "payload.user",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "CDodd1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Local",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 135.07929229736328,
+        "y": 163.85711479187012,
+        "wires": [
+            [
+                "2146d95b.96d026",
+                "20123d87.05c082"
+            ],
+            [
+                "2146d95b.96d026",
+                "20123d87.05c082"
+            ]
+        ]
+    },
+    {
+        "id": "65c1deca.ea996",
+        "type": "string",
+        "z": "d2aa6719.2a60d8",
+        "name": "Strip start/end quotes",
+        "methods": [
+            {
+                "name": "prepend",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "{"
+                    }
+                ]
+            },
+            {
+                "name": "append",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "}"
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 735.7142791748047,
+        "y": 86.28571128845215,
+        "wires": [
+            [
+                "3b8dfb5b.cd29a4",
+                "6072d31.f11c32c"
+            ]
+        ]
+    },
+    {
+        "id": "2e856876.e48528",
+        "type": "image",
+        "z": "d2aa6719.2a60d8",
+        "name": "",
+        "width": 160,
+        "x": 177.22219467163086,
+        "y": 1246.714262008667,
+        "wires": []
+    },
+    {
+        "id": "c898156e.8419c8",
+        "type": "www-request",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get Poster",
+        "method": "GET",
+        "ret": "bin",
+        "url": "{{{payload.poster_url}}}",
+        "follow-redirects": true,
+        "tls": "",
+        "x": 176.5078887939453,
+        "y": 448.57139778137207,
+        "wires": [
+            [
+                "2e856876.e48528",
+                "b7c5c333.6f44c"
+            ]
+        ]
+    },
+    {
+        "id": "f3765713.2f8ec8",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "sudo fbi -T 1 --autozoom --text --noverbose /mnt/rd/poster.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Display poster.jpg",
+        "x": 177.74599075317383,
+        "y": 1183.5635414123535,
+        "wires": [
+            [
+                "6a939cdf.cee294"
+            ],
+            [
+                "81f995fe.0bc3c8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8156dc17.1abba",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Otherwise",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 682.1427841186523,
+        "y": 218.28568077087402,
+        "wires": []
+    },
+    {
+        "id": "2146d95b.96d026",
+        "type": "switch",
+        "z": "d2aa6719.2a60d8",
+        "name": "Action switch",
+        "property": "payload.action",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "watched",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "stopped",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "paused",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "started",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "resumed",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 6,
+        "x": 367.7142448425293,
+        "y": 178.85712432861328,
+        "wires": [
+            [
+                "1ed3aa8b.d01105"
+            ],
+            [
+                "1ed3aa8b.d01105"
+            ],
+            [
+                "3046dba6.fe3a54"
+            ],
+            [
+                "42808521.8c2a7c"
+            ],
+            [
+                "eb0c170f.a6d448"
+            ],
+            [
+                "8156dc17.1abba",
+                "4039c227.47a17c"
+            ]
+        ]
+    },
+    {
+        "id": "ba6a2c97.a5fb7",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Converted Message",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1106.428611755371,
+        "y": 27.714296340942383,
+        "wires": []
+    },
+    {
+        "id": "5f5df240.bd90ac",
+        "type": "comment",
+        "z": "d2aa6719.2a60d8",
+        "name": "Started",
+        "info": "",
+        "x": 181.42857360839844,
+        "y": 321.4285697937012,
+        "wires": []
+    },
+    {
+        "id": "ffa82198.a9cea",
+        "type": "comment",
+        "z": "d2aa6719.2a60d8",
+        "name": "Added",
+        "info": "",
+        "x": 1168.5714492797852,
+        "y": 331.00000381469727,
+        "wires": []
+    },
+    {
+        "id": "1894570b.be38c9",
+        "type": "comment",
+        "z": "d2aa6719.2a60d8",
+        "name": "Stopped / Idle",
+        "info": "",
+        "x": 867.1428833007812,
+        "y": 313.71428394317627,
+        "wires": []
+    },
+    {
+        "id": "b99927f9.6d84f8",
+        "type": "function",
+        "z": "d2aa6719.2a60d8",
+        "name": "Set sequence number",
+        "func": "//counts to 10, then resets, giving 10 possible coming soon posters\nif(global.get('addedSeq')===undefined || global.get('addedSeq')===null || global.get('addedSeq')==10){\n    global.set('addedSeq', 1);\n}else{\n    global.set('addedSeq',global.get('addedSeq')+1);\n}\n\nmsg.filename = '/mnt/rd/soon' + global.get('addedSeq') + '.jpg';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1227.142864227295,
+        "y": 472.8571300506592,
+        "wires": [
+            [
+                "a585f4b4.31c988"
+            ]
+        ]
+    },
+    {
+        "id": "2376cd46.216df2",
+        "type": "comment",
+        "z": "d2aa6719.2a60d8",
+        "name": "Paused",
+        "info": "",
+        "x": 511.4285888671875,
+        "y": 315.71429443359375,
+        "wires": []
+    },
+    {
+        "id": "7899d661.75f9f8",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "sudo fbi -T 1 --autozoom --text --noverbose /mnt/rd/intermission.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Display intermission.jpg",
+        "x": 580.1428833007812,
+        "y": 749.000020980835,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7cab5280.b90c0c",
+        "type": "switch",
+        "z": "d2aa6719.2a60d8",
+        "name": "Is there a poster URL?",
+        "property": "payload.poster_url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "https://",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1232.8572006225586,
+        "y": 399.99999713897705,
+        "wires": [
+            [
+                "b99927f9.6d84f8"
+            ]
+        ]
+    },
+    {
+        "id": "80c57fe1.fbd6b",
+        "type": "file",
+        "z": "d2aa6719.2a60d8",
+        "name": "Save soonX.jpg",
+        "filename": "",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 1224.4286155700684,
+        "y": 585.8571310043335,
+        "wires": [
+            [
+                "a18955e6.78e7e8"
+            ]
+        ]
+    },
+    {
+        "id": "a585f4b4.31c988",
+        "type": "www-request",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get Poster",
+        "method": "GET",
+        "ret": "bin",
+        "url": "{{{payload.poster_url}}}",
+        "follow-redirects": true,
+        "tls": "",
+        "x": 1218.571460723877,
+        "y": 528.5714197158813,
+        "wires": [
+            [
+                "80c57fe1.fbd6b"
+            ]
+        ]
+    },
+    {
+        "id": "1e173877.912c18",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "After convert",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1532.7146339416504,
+        "y": 846.7145557403564,
+        "wires": []
+    },
+    {
+        "id": "38d62e28.b21442",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check RAMdisk access",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": ".",
+        "filenameType": "str",
+        "read": true,
+        "write": true,
+        "throwerror": false,
+        "x": 314.2857142857143,
+        "y": 35.71428571428571,
+        "wires": [
+            [
+                "9bdeab92.f12dc8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3046dba6.fe3a54",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check intermission.jpg exists",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": "intermission.jpg",
+        "filenameType": "str",
+        "read": true,
+        "write": true,
+        "throwerror": false,
+        "x": 561.2857666015625,
+        "y": 541.4285869598389,
+        "wires": [
+            [
+                "7899d661.75f9f8"
+            ],
+            [
+                "fcc69836.7f0918"
+            ]
+        ]
+    },
+    {
+        "id": "7ffbae71.57f82",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "sudo fbi -T 1 -t 30 --autozoom --text --noverbose /mnt/rd/soon*.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Display coming soon loop",
+        "x": 925.4286422729492,
+        "y": 803.0000991821289,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "eb0c170f.a6d448",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "sudo killall fbi",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Kill any slideshows",
+        "x": 176.42861938476562,
+        "y": 1033.000015258789,
+        "wires": [
+            [
+                "f3765713.2f8ec8"
+            ],
+            [
+                "5dede13c.b5cbe"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8a1d271d.4a2b48",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "convert /mnt/rd/poster.jpg -resize 768x /mnt/rd/poster.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "convert to correct width (768)",
+        "x": 205.00001525878906,
+        "y": 861.5714225769043,
+        "wires": [
+            [
+                "e8855105.2bb88",
+                "aeecc26c.172fb"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e8855105.2bb88",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "convert /mnt/rd/NowShowing.png /mnt/rd/poster.jpg -append /mnt/rd/poster.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Add \"Now Showing\"",
+        "x": 185,
+        "y": 944.4285545349121,
+        "wires": [
+            [
+                "eb0c170f.a6d448"
+            ],
+            [
+                "92ab2ddd.9eb2d"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "d8f00b72.6b70c8",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "convert ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "convert",
+        "x": 1259.5714416503906,
+        "y": 871.4287185668945,
+        "wires": [
+            [
+                "1e173877.912c18",
+                "77facc06.e07424"
+            ],
+            [
+                "19e3848b.97ed9b"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "8b4f3201.5107a",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "convert ",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Add \"Coming Soon\"",
+        "x": 1244.5714263916016,
+        "y": 1018.2858505249023,
+        "wires": [
+            [
+                "621b109.9d9f3f"
+            ],
+            [
+                "db3aeda.e66c81"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "6072d31.f11c32c",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Clean Message",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 858.8571701049805,
+        "y": 28.71428680419922,
+        "wires": []
+    },
+    {
+        "id": "92ab2ddd.9eb2d",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Add NS Banner Error",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 482.5,
+        "y": 975.5000228881836,
+        "wires": []
+    },
+    {
+        "id": "aeecc26c.172fb",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Size Convert Out",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 466.0234375,
+        "y": 897.0390853881836,
+        "wires": []
+    },
+    {
+        "id": "5dede13c.b5cbe",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Kill FBI Error",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 458.0234375,
+        "y": 1053.0390853881836,
+        "wires": []
+    },
+    {
+        "id": "81f995fe.0bc3c8",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Display Poster Error",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 480.0234489440918,
+        "y": 1223.0391311645508,
+        "wires": []
+    },
+    {
+        "id": "6a939cdf.cee294",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Display Poster Output",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 472.0234375,
+        "y": 1179.0390853881836,
+        "wires": []
+    },
+    {
+        "id": "c1752904.d3a758",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check NowShowing.png exists",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": "NowShowing.png",
+        "filenameType": "str",
+        "read": true,
+        "write": true,
+        "throwerror": false,
+        "x": 199.02342987060547,
+        "y": 567.0391006469727,
+        "wires": [
+            [
+                "8a1d271d.4a2b48"
+            ],
+            [
+                "3fa92722.614468"
+            ]
+        ]
+    },
+    {
+        "id": "3fa92722.614468",
+        "type": "fs-ops-copy",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get NowShowing.png",
+        "sourcePath": "/home/pi",
+        "sourcePathType": "str",
+        "sourceFilename": "NowShowing.png",
+        "sourceFilenameType": "str",
+        "destPath": "/mnt/rd",
+        "destPathType": "str",
+        "destFilename": "NowShowing.png",
+        "destFilenameType": "str",
+        "link": false,
+        "overwrite": true,
+        "x": 201.77346801757812,
+        "y": 616.4375982284546,
+        "wires": [
+            [
+                "8a1d271d.4a2b48"
+            ]
+        ]
+    },
+    {
+        "id": "fcc69836.7f0918",
+        "type": "fs-ops-copy",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get intermission.jpg",
+        "sourcePath": "/home/pi",
+        "sourcePathType": "str",
+        "sourceFilename": "intermission.jpg",
+        "sourceFilenameType": "str",
+        "destPath": "/mnt/rd",
+        "destPathType": "str",
+        "destFilename": "intermission.jpg",
+        "destFilenameType": "str",
+        "link": false,
+        "overwrite": true,
+        "x": 544.0234680175781,
+        "y": 605.0390605926514,
+        "wires": [
+            [
+                "7899d661.75f9f8"
+            ]
+        ]
+    },
+    {
+        "id": "1ed3aa8b.d01105",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check soon1.jpg exists",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": "soon1.jpg",
+        "filenameType": "str",
+        "read": true,
+        "write": false,
+        "throwerror": false,
+        "x": 887.0234603881836,
+        "y": 359.03906059265137,
+        "wires": [
+            [
+                "7ffbae71.57f82"
+            ],
+            [
+                "4039c227.47a17c"
+            ]
+        ]
+    },
+    {
+        "id": "4039c227.47a17c",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check Theater.jpg exists",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": "Theater.jpg",
+        "filenameType": "str",
+        "read": true,
+        "write": true,
+        "throwerror": false,
+        "x": 892.0234375,
+        "y": 408.0390625,
+        "wires": [
+            [
+                "337c6df1.0f4352"
+            ],
+            [
+                "32119ca6.320f04"
+            ]
+        ]
+    },
+    {
+        "id": "337c6df1.0f4352",
+        "type": "exec",
+        "z": "d2aa6719.2a60d8",
+        "command": "sudo fbi -T 1 --autozoom --text --noverbose /mnt/rd/Theater.jpg",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "Display Theater.jpg",
+        "x": 919.0234375,
+        "y": 524.0390625,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "32119ca6.320f04",
+        "type": "fs-ops-copy",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get Theater.jpg",
+        "sourcePath": "/home/pi",
+        "sourcePathType": "str",
+        "sourceFilename": "Theater.jpg",
+        "sourceFilenameType": "str",
+        "destPath": "/mnt/rd",
+        "destPathType": "str",
+        "destFilename": "Theater.jpg",
+        "destFilenameType": "str",
+        "link": false,
+        "overwrite": true,
+        "x": 906.0234603881836,
+        "y": 456.03907012939453,
+        "wires": [
+            [
+                "337c6df1.0f4352"
+            ]
+        ]
+    },
+    {
+        "id": "20123d87.05c082",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Switch In",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 199.0234375,
+        "y": 219.0390625,
+        "wires": []
+    },
+    {
+        "id": "291bf28b.53281e",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "SW - Added",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1341.0234909057617,
+        "y": 28.039081573486328,
+        "wires": []
+    },
+    {
+        "id": "19e3848b.97ed9b",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Convert Error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1542.5236358642578,
+        "y": 896.0392608642578,
+        "wires": []
+    },
+    {
+        "id": "621b109.9d9f3f",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "After add",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1519.5236358642578,
+        "y": 989.0392913818359,
+        "wires": []
+    },
+    {
+        "id": "db3aeda.e66c81",
+        "type": "debug",
+        "z": "d2aa6719.2a60d8",
+        "name": "Add Error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 1518.5236358642578,
+        "y": 1032.039291381836,
+        "wires": []
+    },
+    {
+        "id": "8995e34f.8a155",
+        "type": "switch",
+        "z": "d2aa6719.2a60d8",
+        "name": "Added?",
+        "property": "payload.action",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "added",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 1197.0234909057617,
+        "y": 85.0390625,
+        "wires": [
+            [
+                "7cab5280.b90c0c",
+                "291bf28b.53281e"
+            ],
+            [
+                "7c354996.cb9b08"
+            ]
+        ]
+    },
+    {
+        "id": "a18955e6.78e7e8",
+        "type": "fs-ops-access",
+        "z": "d2aa6719.2a60d8",
+        "name": "Check ComingSoon.png exists",
+        "path": "/mnt/rd",
+        "pathType": "str",
+        "filename": "ComingSoon.png",
+        "filenameType": "str",
+        "read": true,
+        "write": true,
+        "throwerror": false,
+        "x": 1257.5234680175781,
+        "y": 678.0391006469727,
+        "wires": [
+            [
+                "5fdf3db7.146e24"
+            ],
+            [
+                "11bc8b06.c5f785"
+            ]
+        ]
+    },
+    {
+        "id": "11bc8b06.c5f785",
+        "type": "fs-ops-copy",
+        "z": "d2aa6719.2a60d8",
+        "name": "Get ComingSoon.png",
+        "sourcePath": "/home/pi",
+        "sourcePathType": "str",
+        "sourceFilename": "ComingSoon.png",
+        "sourceFilenameType": "str",
+        "destPath": "/mnt/rd",
+        "destPathType": "str",
+        "destFilename": "ComingSoon.png",
+        "destFilenameType": "str",
+        "link": false,
+        "overwrite": true,
+        "x": 1260.5234298706055,
+        "y": 733.0391616821289,
+        "wires": [
+            [
+                "5fdf3db7.146e24"
+            ]
+        ]
+    },
+    {
+        "id": "5fdf3db7.146e24",
+        "type": "function",
+        "z": "d2aa6719.2a60d8",
+        "name": "Set up convert resize",
+        "func": "//takes msg.filename and builds arguments for convert command exec node in payload\n//convert {{{msg.filename}}} -resize 768x {{{msg.filename}}}\nmsg.payload = \" \" + msg.filename + \" -resize 768x \" + msg.filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1261.5234375,
+        "y": 812.0390625,
+        "wires": [
+            [
+                "d8f00b72.6b70c8"
+            ]
+        ]
+    },
+    {
+        "id": "77facc06.e07424",
+        "type": "function",
+        "z": "d2aa6719.2a60d8",
+        "name": "Set up convert append",
+        "func": "//takes msg.filename and builds arguments for convert command exec node in payload\n//convert /mnt/rd/ComingSoon.png {{{msg.filename}}} -append {{{msg.filename}}}\nmsg.payload = \" /mnt/rd/ComingSoon.png \" + msg.filename + \" -append \" + msg.filename;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1247.5234985351562,
+        "y": 945.0391912460327,
+        "wires": [
+            [
+                "8b4f3201.5107a"
+            ]
+        ]
+    },
+    {
+        "id": "ed1b0f53.d8fd1",
+        "type": "function",
+        "z": "d2aa6719.2a60d8",
+        "name": "Reset sequence number to 0",
+        "func": "global.set('addedSeq', 0);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1600.5234375,
+        "y": 482.0390625,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a7e9ff90.d9eba",
+        "type": "inject",
+        "z": "d2aa6719.2a60d8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 1523.2734375,
+        "y": 420.4609375,
+        "wires": [
+            [
+                "ed1b0f53.d8fd1"
+            ]
+        ]
+    },
+    {
+        "id": "7eb5b073.c834f",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "192.168.107.119",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "verifyservercert": true,
+        "compatmode": true,
+        "keepalive": "15",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": null,
+        "birthPayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": null,
+        "willPayload": ""
+    }
+]
