@@ -110,6 +110,7 @@ display_rotate=3
 3. Import the flow.
 * In Node-Red, select "Import", then "clipboard" from the menu at the top, right
 * Click "select a file to import" and choose "PlexPosterFlow.json"
+* Click in the window to anchor the imported flow
 4. Edit the flow to match your build. (See flow discussion below.)
 
 ### Flow Discussion
