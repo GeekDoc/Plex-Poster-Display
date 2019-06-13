@@ -22,6 +22,7 @@ There are certainly other ways to accomplish this goal.  These are the "requirem
 - MQTT Broker   
 - Node-Red
 - FBI (FrameBuffer Image viewer)
+- Image Magick (image modification)
 4. Display monitor (I'm using a salvaged 768x1366 display from a broken laptop, with a driver board from eBay. The images and commands used are sometimes specific to that resolution, but can be easily changed.)
 
 ## Plex Server
