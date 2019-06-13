@@ -44,7 +44,8 @@ Unless you already have an MQTT broker available, you will want to set that up f
    - Watched
    - Recently Added
    
-   Tautulli can send a huge amount of info; I encourage you to see what's available and how it can be formatted by clicking the links at the top of the "Text" tab. I went for the shotgun approach for now.  I send a lot of headers, but they may be empty.
+   Tautulli can send a huge amount of info; I encourage you to see what's available and how it can be formatted by clicking the links at the top of the "Text" tab. I went for the shotgun approach for now.  I send a lot of headers, but they may be empty.  The Node-Red flow only uses "user", "action", and "poster_url", so the rest could actually be eliminated.
+   
    I configured each of the above messages with the same basic output:
    ```JSON
    "user":"{user}", "action":"started", "type":"{media_type}", "title":"{title}", "episode":"S{season_num00}E{episode_num00}", "year":"{year}", "poster_url":"{poster_url}"
