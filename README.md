@@ -29,7 +29,7 @@ There are certainly other ways to accomplish this goal.  These are the "requirem
 This project assumes you have a working Plex server.  Setup of Plex is beyond the scope of this project.
 
 ## Tautulli
-This project assumes you have a working Tautulli installation that is getting information from your Plex server.  I will only cover the project-specific setup here.  I can't remember if using cloudinary is standard in Tautulli, but you will need that, too.  I may have set up Cloudinary when I set up my weekly user newsletter.
+This project assumes you have a working Tautulli installation that is getting information from your Plex server.  I will only cover the project-specific setup here.  I can't remember if using Cloudinary is standard in Tautulli, but you will need that, too.  I may have set up Cloudinary when I set up my weekly user newsletter.
 Unless you already have an MQTT broker available, you will want to set that up first, before configuring Tautulli MQTT notifications.
 
 1. Set up an MQTT notification agent.  
@@ -43,6 +43,7 @@ Unless you already have an MQTT broker available, you will want to set that up f
    - Playback Resume
    - Watched
    - Recently Added
+   
    Tautulli can send a huge amount of info; I encourage you to see what's available and how it can be formatted by clicking the links at the top of the "Text" tab. I went for the shotgun approach for now.  I send a lot of headers, but they may be empty.
    I configured each of the above messages with the same basic output:
    ```JSON
